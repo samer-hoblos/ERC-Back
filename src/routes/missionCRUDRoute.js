@@ -7,26 +7,21 @@ function and route for get all the missions
 */
     let getmissions = () => {
         app.get('/mission', async (req, res) => {
-
-            // let query = `SELECT mission.date,
-            //     mission.time,
-            //     volunteer.firstName,
-            //     car.name as car,
-            //     FROM mission
-            //     LEFT JOIN volunteer ON volunteer.id=mission.volunteerID 
-            //     LEFT JOIN car ON car.id=mission.carID`
-
+            
             let query = `SELECT
-                mission.date as date,
-                mission.time as time,
-                mission.description as description,
+                m.date as date,
+                m.time as time,
+                m.description as description,
+                m.destination as destination,
                 t.teamname as team,
+                c.id as carId,
+                c.carnumber as carNumber
                 FROM mission m
-                INNER JOIN team t ON m.id=t.carID
+                INNER JOIN team t ON m.teamID=t.id
+                INNER JOIN car c ON c.id=t.carID
                 ORDER BY m.id`
 
             connection.con.query(query, (err, result) => {
-                console.log(err);
                 try {
                     if (result && result.length > 0) {
                         res.status(200).json({ success: true, result: result });
@@ -48,17 +43,7 @@ function and route for get all the missions
     let getmission = () => {
         app.post('/mission', async (req, res) => {
             let date = req.body.date;
-            let query = `SELECT mission.date, mission.id,
-            mission.time,
-            
-            mission.missionNB,
-            CONCAT(volunteer.firstName,' ',volunteer.lastName) as volunteer  ,
-              volunteer.totalMission as totalMission,volunteer.id as volunteerID,
-               car.name as car,car.id as carID,
-          LEFT JOIN volunteer ON volunteer.id=mission.volunteerID 
- 
-          LEFT JOIN car ON car.id=mission.carID
-             where mission.date='${date}'`
+            let query = ``
             connection.con.query(query, (err, result) => {
                 try {
                     if (result.length > 0) {

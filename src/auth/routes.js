@@ -1,5 +1,6 @@
 function routes(app, controller) {
-//route
+    
+    //route
     app.post("/signup", async (req, res, next) => {
         const { name, nickname, password } = req.body;
         try {
